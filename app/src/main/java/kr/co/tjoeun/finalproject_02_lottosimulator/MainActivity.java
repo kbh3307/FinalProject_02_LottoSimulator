@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,28 @@ public class MainActivity extends BaseActivity {
 
     ActivityMainBinding binding = null;
 
+    Handler mHandler = new Handler();
+    Runnable buyLottoRunnable = new Runnable() {
+        @Override
+        public void run() {
+
+            if (useMoneyAmount < 10000000) {
+                makeWinLottoNum();
+                checkLottoRank();
+
+                buyLottoLoop();
+            }
+            else {
+                Toast.makeText(mContext, "로또 구매를 종료합니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    void buyLottoLoop() {
+        mHandler.post(buyLottoRunnable);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +71,15 @@ public class MainActivity extends BaseActivity {
             binding.buyAutoLottoBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-//                    사용금액의 총액이 1천만원이 될때까지 반복
-
-                    while (useMoneyAmount < 1600000000) {
-//                        당첨번호를 만들고 => 등수를 카운팅
-                        makeWinLottoNum();
-                        checkLottoRank();
-                    }
+//
+////                    사용금액의 총액이 1천만원이 될때까지 반복
+//
+//                    while (useMoneyAmount < 10000000) {
+////                        당첨번호를 만들고 => 등수를 카운팅
+//                        makeWinLottoNum();
+//                        checkLottoRank();
+//                    }
+                    buyLottoLoop();
                 }
             });
 
