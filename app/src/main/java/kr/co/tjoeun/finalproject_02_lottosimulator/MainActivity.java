@@ -37,17 +37,16 @@ public class MainActivity extends BaseActivity {
     @Override
     public void setupEvents() {
 
-        binding.buyOneLottoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            binding.buyOneLottoBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 //                당첨번호를 생성 => 텍스트뷰에 반영
-                makeWinLottoNum();
+                    makeWinLottoNum();
 //                몇등인지 판단
-                checkLottoRank();
-            }
-        });
-
+                    checkLottoRank();
+                }
+            });
     }
 
     @Override
@@ -170,11 +169,30 @@ public class MainActivity extends BaseActivity {
 
 //        correctCount의 값에 따라 등수를 판정
         if (correctCount == 6) {
-//            1등 16억
+//            1등
             winMoneyAmount += 1600000000;
         }
         else if (correctCount == 5) {
 //            2등 / 3등 재검사 필요 => 보너스번호를 맞췄는지?
+//            => 내 번호중에 보너스번호와 같은게 있나?
+
+            boolean hasBonusNum = false;
+
+            for (int myNum : myLottoNumArr) {
+                if (myNum == bonusNum) {
+                    hasBonusNum = true;
+                    break;
+                }
+            }
+
+            if (hasBonusNum){
+//                2등
+                winMoneyAmount += 75000000;
+            }
+            else {
+//                3등
+                winMoneyAmount += 1500000;
+            }
         }
         else if (correctCount == 4) {
 //            4등
