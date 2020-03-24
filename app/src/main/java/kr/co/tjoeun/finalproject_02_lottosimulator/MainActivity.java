@@ -6,11 +6,17 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import kr.co.tjoeun.finalproject_02_lottosimulator.databinding.ActivityMainBinding;
 
 public class MainActivity extends BaseActivity {
 
+    List<TextView> winNumTxtList = new ArrayList<>();
     int[] winLottoNumArr = new int[6];
     int bonusNum = 0;
 
@@ -41,6 +47,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public void setValues() {
 
+        winNumTxtList.add(binding.winLottoNumTxt01);
+        winNumTxtList.add(binding.winLottoNumTxt02);
+        winNumTxtList.add(binding.winLottoNumTxt03);
+        winNumTxtList.add(binding.winLottoNumTxt04);
+        winNumTxtList.add(binding.winLottoNumTxt05);
+        winNumTxtList.add(binding.winLottoNumTxt06);
+
     }
 
     void makeWinLottoNum() {
@@ -52,7 +65,7 @@ public class MainActivity extends BaseActivity {
 //        당첨번호+보너스번호를 모두 0으로 초기화
 //        (이미 뽑은 번호가 있다면 모두 날리자)
 
-        for (int i=0; i<winLottoNumArr.length; i++) {
+        for (int i = 0; i < winLottoNumArr.length; i++) {
             winLottoNumArr[i] = 0;
         }
         bonusNum = 0;
@@ -60,7 +73,7 @@ public class MainActivity extends BaseActivity {
 //        로또번호 6개 생성
 //        1~45여야 함 + 중복허용 X
 
-        for (int i=0; i<winLottoNumArr.length; i++) {
+        for (int i = 0; i < winLottoNumArr.length; i++) {
 //            1~45의 숫자를 랜덤으로 뽑고
 //            중복이 아니라면 => 당첨번호로 선정
 //            중복이라면? => 다시 뽑자 => 중복이 아닐 때까지 계속 뽑자
@@ -71,7 +84,7 @@ public class MainActivity extends BaseActivity {
 
 //                1~45의 정수를 랜덤으로 뽑아서 임시저장
 //                이 숫자가 중복검사를 통과하면 사용, 아니면 다시
-                int randomNum = (int) (Math.random()*45+1);
+                int randomNum = (int) (Math.random() * 45 + 1);
 
 //                중복검사? 당첨번호 전부와 randomNum을 비교
 //                하나라도 같으면 탈락
@@ -86,10 +99,23 @@ public class MainActivity extends BaseActivity {
 
                 if (isDuplOk) {
                     winLottoNumArr[i] = randomNum;
-                    Log.i("당첨번호", randomNum+"");
+                    Log.i("당첨번호", randomNum + "");
                     break; // 무한반복 탈출
                 }
             }
         }
+
+//        6개의 당첨번호를 작은 숫자부터 정렬
+        Arrays.sort(winLottoNumArr);
+
+//        for (int num : winLottoNumArr) {
+//            Log.i("정렬된 숫자", num+"");
+//    }
+            for (int i=0; i<winLottoNumArr.length; i++) {
+
+            winNumTxtList.get(i).setText(winLottoNumArr[i]+"");
+        }
+
+
     }
 }
